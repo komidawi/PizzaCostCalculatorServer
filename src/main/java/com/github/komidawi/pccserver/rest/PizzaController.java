@@ -4,7 +4,7 @@ import com.github.komidawi.pccserver.data.Pizza;
 import com.github.komidawi.pccserver.service.PizzaService;
 import org.springframework.web.bind.annotation.*;
 
-@RestController()
+@RestController
 @RequestMapping("/pizza")
 public class PizzaController {
 
@@ -16,11 +16,16 @@ public class PizzaController {
 
     @GetMapping("/{id}")
     Pizza getPizza(@PathVariable Long id) {
-        return pizzaService.findById(id);
+        return pizzaService.getById(id);
     }
 
     @PostMapping
     Pizza addPizza(@RequestBody Pizza newPizza) {
         return pizzaService.save(newPizza);
+    }
+
+    @DeleteMapping("/{id}")
+    void deletePizza(@PathVariable Long id) {
+        pizzaService.delete(id);
     }
 }

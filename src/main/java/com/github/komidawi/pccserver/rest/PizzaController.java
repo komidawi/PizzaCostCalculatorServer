@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/pizza")
 public class PizzaController {
@@ -20,6 +22,11 @@ public class PizzaController {
     Pizza getPizza(@PathVariable Long id) {
         return pizzaService.getById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    }
+
+    @GetMapping
+    List<Pizza> getAllPizzas() {
+        return pizzaService.getAll();
     }
 
     @PostMapping

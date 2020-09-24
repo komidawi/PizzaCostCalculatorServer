@@ -76,6 +76,24 @@ public class RestApiTest {
         assertTrue(pizzaService.getAll().isEmpty());
     }
 
+    @Test
+    public void getNonExistingPizza_returns404() throws Exception {
+        // expected
+        mvc.perform(MockMvcRequestBuilders
+                .get("/pizza/999")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    public void deleteNonExistingPizza_returns404() throws Exception {
+        // expected
+        mvc.perform(MockMvcRequestBuilders
+                .delete("/pizza/999")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().is4xxClientError());
+    }
+
     private static String toJsonString(final Object obj) {
         try {
             return new ObjectMapper().writeValueAsString(obj);

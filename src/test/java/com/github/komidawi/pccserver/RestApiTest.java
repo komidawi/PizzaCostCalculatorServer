@@ -1,6 +1,5 @@
 package com.github.komidawi.pccserver;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.komidawi.pccserver.data.Pizza;
 import com.github.komidawi.pccserver.service.PizzaService;
 import org.junit.jupiter.api.BeforeEach;
@@ -8,12 +7,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import static com.github.komidawi.pccserver.util.JsonUtils.toJsonString;
+import static com.github.komidawi.pccserver.data.TestPizzaFactory.createPizza;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -35,41 +36,43 @@ public class RestApiTest {
     @Test
     public void addPizzaEndpoint_addsPizza() throws Exception {
         // given
-        Pizza pizza = new Pizza("test_pizza_name");
+        Pizza pizza = createPizza();
 
         // expected
         mvc.perform(MockMvcRequestBuilders
                 .post("/pizza")
-                .contentType(MediaType.APPLICATION_JSON)
+                .contentType(APPLICATION_JSON)
                 .content(toJsonString(pizza))
-                .accept(MediaType.APPLICATION_JSON))
+                .accept(APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name", is(pizza.getName())));
+                .andExpect(jsonPath("$.name", is(pizza.getName())))
+                .andReturn();
     }
 
     @Test
-    public void getPizzaEndpoint_returnsExistingPizza() throws Exception {
+    public void getAllPizzasEndpoint_returnsAllPizzas() throws Exception {
         // given
-        Pizza pizza = new Pizza("test_pizza_name");
-        pizzaService.save(pizza);
+        Pizza pizza1 = createPizza();
+        Pizza pizza2 = createPizza();
+        pizzaService.save(pizza1);
+        pizzaService.save(pizza2);
 
         // expected
         mvc.perform(MockMvcRequestBuilders
-                .get("/pizza/2")
-                .accept(MediaType.APPLICATION_JSON))
+                .get("/pizza"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name", is(pizza.getName())));
+                .andExpect(jsonPath("$.length()", is(2)))
+                .andReturn();
     }
 
     @Test
     public void deletePizzaEndpoint_deletesExistingPizza() throws Exception {
         // given
-        Pizza pizza = new Pizza("test_pizza_name");
-        pizzaService.save(pizza);
+        Pizza savedPizza = pizzaService.save(createPizza());
 
         // expected
         mvc.perform(MockMvcRequestBuilders
-                .delete("/pizza/1"))
+                .delete("/pizza/" + savedPizza.getId()))
                 .andExpect(status().isOk());
 
         // and
@@ -80,8 +83,7 @@ public class RestApiTest {
     public void getNonExistingPizza_returns404() throws Exception {
         // expected
         mvc.perform(MockMvcRequestBuilders
-                .get("/pizza/999")
-                .accept(MediaType.APPLICATION_JSON))
+                .get("/pizza/0"))
                 .andExpect(status().is4xxClientError());
     }
 
@@ -89,16 +91,8 @@ public class RestApiTest {
     public void deleteNonExistingPizza_returns404() throws Exception {
         // expected
         mvc.perform(MockMvcRequestBuilders
-                .delete("/pizza/999")
-                .accept(MediaType.APPLICATION_JSON))
+                .delete("/pizza/0"))
                 .andExpect(status().is4xxClientError());
     }
 
-    private static String toJsonString(final Object obj) {
-        try {
-            return new ObjectMapper().writeValueAsString(obj);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
 }

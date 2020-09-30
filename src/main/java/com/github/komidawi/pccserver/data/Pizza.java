@@ -1,61 +1,36 @@
 package com.github.komidawi.pccserver.data;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import java.util.Objects;
+import java.math.BigDecimal;
+import java.util.UUID;
+
 
 @Entity
+@Data
+@NoArgsConstructor
 public class Pizza {
 
     @Id
     @GeneratedValue
     private Long id;
 
+    private UUID uuid = UUID.randomUUID();
+
     private String name;
 
-    public Pizza() {
-    }
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
+    private BigDecimal size;
 
-    public Pizza(String name) {
-        this.name = name;
-    }
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
+    private BigDecimal price;
 
-    public Long getId() {
-        return id;
-    }
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
+    private BigDecimal ratio;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        final Pizza pizza = (Pizza) o;
-        return id.equals(pizza.id) &&
-                name.equals(pizza.name);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name);
-    }
-
-    @Override
-    public String toString() {
-        return "Pizza{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
-    }
 }

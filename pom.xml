@@ -16,6 +16,10 @@
 
 	<properties>
 		<java.version>14</java.version>
+
+		<sonar.projectKey>komidawi_PizzaCostCalculatorServer</sonar.projectKey>
+		<sonar.organization>komidawi-sonar</sonar.organization>
+		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 	</properties>
 
 	<dependencies>

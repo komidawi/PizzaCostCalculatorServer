@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class PizzaService {
@@ -28,8 +29,18 @@ public class PizzaService {
     }
 
     @Transactional
+    public Optional<Pizza> getByUuid(String uuid) {
+        return repository.findByUuid(UUID.fromString(uuid));
+    }
+
+    @Transactional
     public Pizza save(Pizza newPizza) {
         return repository.save(newPizza);
+    }
+
+    @Transactional
+    public Long deleteByUuid(String uuid) {
+        return repository.deletePizzaByUuid(UUID.fromString(uuid));
     }
 
     @Transactional

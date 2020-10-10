@@ -20,29 +20,29 @@ public class PizzaController {
     }
 
     @GetMapping(BY_ID_PATH + "/{id}")
-    Pizza getPizzaById(@PathVariable Long id) {
+    public Pizza getPizzaById(@PathVariable Long id) {
         return pizzaService.getById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
     @GetMapping(BY_UUID_PATH + "/{uuid}")
-    Pizza getPizzaByUuid(@PathVariable String uuid) {
+    public Pizza getPizzaByUuid(@PathVariable String uuid) {
         return pizzaService.getByUuid(uuid)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
     @GetMapping(ROOT_PATH)
-    List<Pizza> getAllPizzas() {
+    public List<Pizza> getAllPizzas() {
         return pizzaService.getAll();
     }
 
     @PostMapping(ROOT_PATH)
-    Pizza addPizza(@RequestBody Pizza newPizza) {
+    public Pizza addPizza(@RequestBody Pizza newPizza) {
         return pizzaService.save(newPizza);
     }
 
     @DeleteMapping(BY_ID_PATH + "/{id}")
-    void deleteById(@PathVariable Long id) {
+    public void deleteById(@PathVariable Long id) {
         Long deletedCount = pizzaService.deleteById(id);
 
         if (deletedCount.equals(0L)) {
@@ -51,7 +51,7 @@ public class PizzaController {
     }
 
     @DeleteMapping(BY_UUID_PATH + "/{uuid}")
-    void deleteByUuid(@PathVariable String uuid) {
+    public void deleteByUuid(@PathVariable String uuid) {
         Long deletedCount = pizzaService.deleteByUuid(uuid);
 
         if (deletedCount.equals(0L)) {

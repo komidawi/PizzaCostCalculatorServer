@@ -6,4 +6,10 @@ public class TestPizzaFactory {
         return new Pizza();
     }
 
+    public static Pizza createPizza(String name) {
+        Pizza pizza = createPizza();
+        pizza.setName(name);
+        return pizza;
+    }
+
 }

@@ -10,8 +10,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import static com.github.komidawi.pccserver.util.JsonUtils.toJsonString;
 import static com.github.komidawi.pccserver.data.TestPizzaFactory.createPizza;
+import static com.github.komidawi.pccserver.rest.PizzaControllerConfig.BY_UUID_PATH;
+import static com.github.komidawi.pccserver.rest.PizzaControllerConfig.ROOT_PATH;
+import static com.github.komidawi.pccserver.util.JsonUtils.toJsonString;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -40,11 +42,27 @@ public class RestApiTest {
 
         // expected
         mvc.perform(MockMvcRequestBuilders
-                .post("/pizza")
+                .post(ROOT_PATH)
                 .contentType(APPLICATION_JSON)
                 .content(toJsonString(pizza))
                 .accept(APPLICATION_JSON))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name", is(pizza.getName())))
+                .andReturn();
+    }
+
+    @Test
+    public void getPizzaEndpoint_returnsPizza() throws Exception {
+        // given
+        Pizza pizza = createPizza("test_get_pizza");
+        pizzaService.save(pizza);
+
+        // expected
+        mvc.perform(MockMvcRequestBuilders
+                .get(BY_UUID_PATH + "/" + pizza.getUuid())
+                .accept(APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.uuid", is(pizza.getUuid().toString())))
                 .andExpect(jsonPath("$.name", is(pizza.getName())))
                 .andReturn();
     }
@@ -59,7 +77,7 @@ public class RestApiTest {
 
         // expected
         mvc.perform(MockMvcRequestBuilders
-                .get("/pizza"))
+                .get(ROOT_PATH))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()", is(2)))
                 .andReturn();
@@ -72,7 +90,7 @@ public class RestApiTest {
 
         // expected
         mvc.perform(MockMvcRequestBuilders
-                .delete("/pizza/" + savedPizza.getId()))
+                .delete(BY_UUID_PATH + "/" + savedPizza.getUuid()))
                 .andExpect(status().isOk());
 
         // and
@@ -83,7 +101,7 @@ public class RestApiTest {
     public void getNonExistingPizza_returns404() throws Exception {
         // expected
         mvc.perform(MockMvcRequestBuilders
-                .get("/pizza/0"))
+                .get(ROOT_PATH + "/0"))
                 .andExpect(status().is4xxClientError());
     }
 
@@ -91,7 +109,7 @@ public class RestApiTest {
     public void deleteNonExistingPizza_returns404() throws Exception {
         // expected
         mvc.perform(MockMvcRequestBuilders
-                .delete("/pizza/0"))
+                .delete(ROOT_PATH + "/0"))
                 .andExpect(status().is4xxClientError());
     }
 

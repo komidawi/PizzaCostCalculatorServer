@@ -1,0 +1,2 @@
+[![Build status](https://github.com/komidawi/PizzaCostCalculatorServer/workflows/build/badge.svg)](https://github.com/komidawi/PizzaCostCalculatorServer/actions)
+[![Code coverage](https://codecov.io/gh/komidawi/PizzaCostCalculatorServer/branch/master/graph/badge.svg)](https://codecov.io/gh/komidawi/PizzaCostCalculatorServer)

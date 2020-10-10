@@ -1,6 +1,6 @@
 General status:
 
-[![Build status](https://github.com/komidawi/PizzaCostCalculatorServer/workflows/Build/badge.svg)](https://github.com/komidawi/PizzaCostCalculatorServer/actions)
+[![Build status](https://github.com/komidawi/PizzaCostCalculatorServer/workflows/Build-Master/badge.svg)](https://github.com/komidawi/PizzaCostCalculatorServer/actions)
 [![Code coverage](https://codecov.io/gh/komidawi/PizzaCostCalculatorServer/branch/master/graph/badge.svg)](https://codecov.io/gh/komidawi/PizzaCostCalculatorServer)
 
 ---

@@ -1,7 +1,12 @@
-General status:
+Build status (master):
 
 [![Build status](https://github.com/komidawi/PizzaCostCalculatorServer/workflows/Build-Master/badge.svg)](https://github.com/komidawi/PizzaCostCalculatorServer/actions)
+
+Coverage levels:
+
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=komidawi_PizzaCostCalculatorServer&metric=coverage)](https://sonarcloud.io/dashboard?id=komidawi_PizzaCostCalculatorServer)
 [![Code coverage](https://codecov.io/gh/komidawi/PizzaCostCalculatorServer/branch/master/graph/badge.svg)](https://codecov.io/gh/komidawi/PizzaCostCalculatorServer)
+
 
 ---
 
